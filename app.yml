@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  tomcat:
+    image: tomcat:alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tomcat.rule=Host(`127.0.0.1`)" # Traefik will route based on the host
+    networks:
+      - traefik
+
+networks:
+  traefik:
+

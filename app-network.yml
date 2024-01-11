@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - traefik
+
+  tomcat:
+    image: tomcat:alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tomcat.rule=Host(`127.0.0.1`)" # Traefik will route based on the host
+    networks:
+      - traefik
+
+networks:
+  traefik:
+
